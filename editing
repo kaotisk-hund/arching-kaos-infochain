@@ -1,0 +1,33 @@
+
+QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH    ipfs hash
+0QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH0  prepend and append zeros
+
+
+0QmbFMke1KXqnYyB
+BWxB74N4c5SBnJMV
+AiMNRcGu6x1AwQH0  split it
+
+
+BWxB74N4c5SBnJMV0QmbFMke1KXqnYyB
+0QmbFMke1KXqnYyBBWxB74N4c5SBnJMV
+BWxB74N4c5SBnJMVAiMNRcGu6x1AwQH0
+0QmbFMke1KXqnYyBAiMNRcGu6x1AwQH0 mix it
+
+send tx 1 2 3 4
+
+Sender is NOT the owner of the data, is the distributor. Artists should be able to distribute their work.
+
+receive txs in general
+
+BWxB74N4c5SBnJMV 0QmbFMke1KXqnYyB
+0QmbFMke1KXqnYyB BWxB74N4c5SBnJMV
+BWxB74N4c5SBnJMV AiMNRcGu6x1AwQH0
+0QmbFMke1KXqnYyB AiMNRcGu6x1AwQH0 split it
+
+Find zeros in start and end
+
+If starts and ends with zero it's an 1-3 combination
+Starts but not ends with zero it's 1-2
+If it doesn't start with zero but ends with it it's 2-3
+else is 2-1
+
