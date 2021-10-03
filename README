@@ -5,7 +5,7 @@ A way of spliting messages and restruct them from an unordered list.
 
 See editing for notes on how this is achieved.
 
-You can directly go to clear.py
+You can directly go to edcode.py
 
 QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH    ipfs hash
 .QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH.  prepend and append dots
