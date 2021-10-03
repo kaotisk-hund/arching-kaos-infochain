@@ -5,7 +5,7 @@
 # 
 # GPG is mentioned as a signing algorithm for encryption, decryption and signing.
 # Let's say we have a file named as `example`
-FINGERPRINT=CD9ACF880C7DF2DAC6E54C1215330BE2FD0C00F2
+FINGERPRINT="CHANGE THIS TO YOUR DEFAULT FINGERPRINT"
 usage(){
 	echo "$0 - action file"
 	echo "Findout"
