@@ -5,7 +5,8 @@
 # 
 # GPG is mentioned as a signing algorithm for encryption, decryption and signing.
 # Let's say we have a file named as `example`
-FINGERPRINT="CHANGE THIS TO YOUR DEFAULT FINGERPRINT"
+#FINGERPRINT="CHANGE THIS TO YOUR DEFAULT FINGERPRINT"
+FINGERPRINT="$(gpg2 --list-keys |grep kaos@kaos.kaos -1 | head -n1 | awk '{print $1}')"
 usage(){
 	echo "$0 - action file"
 	echo "Findout"
@@ -71,8 +72,8 @@ title
 if [ ! -z $2 ];
 then
 	PWD="$(pwd)"
-	MESSAGE="$PWD/$1"
-	ACTION="$2"
+	MESSAGE="$PWD/$2"
+	ACTION="$1"
 	main
 else usage
 fi
