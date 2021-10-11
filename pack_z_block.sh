@@ -69,7 +69,7 @@ EOF
 }
 title(){
 	echo "AK zblock creator from ACTION and FILE"
-	echo "====================================="
+	echo "======================================"
 }
 title
 if [ ! -z $2 ];
