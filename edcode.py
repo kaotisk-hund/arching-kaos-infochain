@@ -1,39 +1,44 @@
 # Encoding
 def encode(m):
-    return m[15:31]+"."+m[:15],"."+m[:15]+m[15:31],m[15:31]+m[31:]+".","."+m[:15]+m[31:]+"." 
+    return "..."+m[:11]+".."+m[11:23], "..."+m[:11]+m[23:35]+"..", "..."+m[:11]+m[35:]+"...", ".."+m[11:23]+m[23:35]+"..", ".."+m[11:23]+m[35:]+"..."
+
 # Decoding
 def decode(tx):
     ones = []
     twos = []
     tres = []
     fors = []
+    fivs = []
     vals = []
     resu = []
     for x in tx:
-        if x.startswith("."): # 12 or 13
-            if x.endswith("."): # 13
-                fors.append(x)
-            else:
-                twos.append(x)
-        else: 
-            if x.endswith("."):
-                tres.append(x)
-            else:
+        if x.startswith("..."): # AB or AC or AD
+            if x.endswith(".."): # AC or AD
+                if x.endswith("..."): # AD
+                    tres.append(x)
+                else: # AC
+                    twos.append(x)
+            else: # AB
                 ones.append(x)
+        else: # BC or BD
+            if x.endswith("..."): # BD
+                fivs.append(x)
+            else: # BC
+                fors.append(x)
+    print(ones, twos, tres, fors, fivs)
     for on in ones:
         for tw in twos:
-            if on[:16] == tw[16:] or on[16:] == tw[:16]:
-                for tr in tres:
-                    if tr[:16] == tw[16:]:
-                        print("found")
-                        for fo in fors:
-                            if on[16:] == fo[:16]:
+            for tr in tres:
+                if on[:14] == tw[:14] and on[:14] == tr[:14]:
+                    print("found")
+                    for fo in fors:
+                        for fi in fivs:
+                            if on[14:] == fo[:14] and on[14:] == fi[:14]:
                                 print("validated")
-                                vals.append(on[16:]+tw[16:]+tr[16:])
+                                vals.append(on[:14]+fo+fi[14:])
 
     for v in vals:
-        if v.startswith(".") and v.endswith("."):
-            resu.append(v[1:47])
+        resu.append(v.replace(".",""))
     return resu
 
 def test():
@@ -41,7 +46,7 @@ def test():
     pr = encode(orig)
     print(pr)
     e = decode(pr)
-    sl = e[0][1:47]
+    sl = e[0]
     print(sl)
     print(orig)
     if orig == sl:
