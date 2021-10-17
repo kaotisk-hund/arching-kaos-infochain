@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # We need a script to download all the data -no verification prewrite-
 # 
 # Things are quite simple, we load the HASH of ZBLOCK, then we extract the BLOCK
@@ -27,7 +28,7 @@ def download_block(block, block_signature):
     extract_block(block)
 
 def extract_zblock(ZBLOCK_HASH):
-    hash = "/home/kaotisk/projects/arching-kaos-infochain/leme/zblock"
+    hash = "/home/kaotisk/projects/arching-kaos-infochain/lab/zblock"
     hash=ZBLOCK_HASH
     with open(hash) as json_file:
         data=json.load(json_file)
@@ -59,4 +60,5 @@ def extract_block(block):
         print("gpg: "+key)
         open(key, 'wb').write(temp.content)
 
-extract_zblock("QmTkWkLkxaF1bwZVEBPB12j4hz9bfD52WGZZLvZaNj9MyD")
+# Example usage:
+# extract_zblock("QmTkWkLkxaF1bwZVEBPB12j4hz9bfD52WGZZLvZaNj9MyD")
