@@ -28,7 +28,7 @@ def download_block(block, block_signature):
     extract_block(block)
 
 def extract_zblock(ZBLOCK_HASH):
-    hash = "/home/kaotisk/projects/arching-kaos-infochain/lab/zblock"
+    hash = "zblock"
     hash=ZBLOCK_HASH
     with open(hash) as json_file:
         data=json.load(json_file)
