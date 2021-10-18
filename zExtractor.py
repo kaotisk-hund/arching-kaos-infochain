@@ -17,7 +17,7 @@ ipfs_gateway="http://127.0.0.1:8080/ipfs/"
 def download_zblock(ZBLOCK_HASH):
     temp=requests.get(ipfs_gateway+ZBLOCK_HASH)
     open(ZBLOCK_HASH, 'wb').write(temp.content)
-    # extract_zblock()
+    extract_zblock(ZBLOCK_HASH)
 
 def download_block(block, block_signature):
     temp=requests.get(ipfs_gateway+block)
@@ -32,7 +32,7 @@ def extract_zblock(ZBLOCK_HASH):
     hash=ZBLOCK_HASH
     with open(hash) as json_file:
         if os.stat(hash).st_size == 0:
-            print("Genesis block")
+            return "Genesis block"
         else:
             data=json.load(json_file)
             block=data['block']
@@ -48,7 +48,7 @@ def extract_zblock(ZBLOCK_HASH):
 def extract_block(block):
     with open(block) as json_file:
         if os.stat(block).st_size == 0:
-            print("Empty block")
+            return "Empty block"
         else:
             block_data=json.load(json_file)
             action=block_data['action']
@@ -64,6 +64,10 @@ def extract_block(block):
             key=block_data['gpg']
             print("gpg: "+key)
             open(key, 'wb').write(temp.content)
+            previous=block_data['previous']
+            print("previous: "+previous)
+            open(previous, 'wb').write(temp.content)
+            download_zblock(previous)
 
 # Example usage:
 # extract_zblock("QmTkWkLkxaF1bwZVEBPB12j4hz9bfD52WGZZLvZaNj9MyD")
