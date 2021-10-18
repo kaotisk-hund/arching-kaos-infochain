@@ -25,16 +25,15 @@ def decode(tx):
                 fivs.append(x)
             else: # BC
                 fors.append(x)
-    print(ones, twos, tres, fors, fivs)
     for on in ones:
         for tw in twos:
             for tr in tres:
                 if on[:14] == tw[:14] and on[:14] == tr[:14]:
-                    print("found")
+                    # print("found")
                     for fo in fors:
                         for fi in fivs:
                             if on[14:] == fo[:14] and on[14:] == fi[:14]:
-                                print("validated")
+                                # print("validated")
                                 vals.append(on[:14]+fo+fi[14:])
 
     for v in vals:
