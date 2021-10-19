@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>ArchingKaos Infochain Parser</title>
+    </head>
+    <body>
+    <p>hi</p>
+    <div id="results">
+    </div>
+    </body>
+    <script>
+    let txs = []
+    fetch('//api.stellar.expert/explorer/public/payments?asset=ARCHINGKAOS-GB4QVKD6NW3CSNO5TNPARAWNPPXOPSSTKB35XCWB7PUNBIQTK3DVELB2&order=asc&limit=2000')
+    .then(respone=>respone.json())
+    .then(data=>{
+        txs=data._embedded.records
+        ones = []
+        twos = []
+        tres = []
+        fors = []
+        fivs = []
+        vals = []
+        resu = []
+        for (y in txs)
+        {
+            if (typeof txs[y].memo !== 'undefined')
+            {
+                x=txs[y].memo
+                if (x.startsWith("..."))
+                {
+                    if (x.endsWith(".."))
+                    {
+                        if (x.endsWith("..."))
+                        {
+                            tres.push(x)
+                        }
+                        else
+                        {
+                            twos.push(x)
+                        }
+                    }
+                    else
+                    {
+                        ones.push(x)
+                    }
+                }
+                else
+                {
+                    if (x.endsWith("..."))
+                    {
+                        fivs.push(x)
+                    }
+                    else
+                    {
+                        fors.push(x)
+                    }
+                }
+            }
+            else
+            {
+                console.log("transaction skipped")
+            }
+        }
+        for (on in ones){
+        for (tw in twos){
+        for (tr in tres){
+            if (ones[on].substr(0,14) == twos[tw].substr(0,14) && ones[on].substr(0,14) == tres[tr].substr(0,14)){
+            console.log("found")
+            for (fo in fors){
+                for (fi in fivs){
+                if (ones[on].substr(14) == fors[fo].substr(0,14) && ones[on].substr(14) == fivs[fi].substr(0,14)){
+                    console.log("Validated")
+                    val=ones[on].concat(twos[tw].substr(14),tres[tr].substr(14))
+                    vals.push(val)
+                    resu.push(val.replace(/\./g,""))
+                    console.log(val.replace(/\./g,""))
+                }
+                }
+            }
+            }
+        }
+            }
+        }
+        for (r in resu){
+            some = document.createElement("p")
+            inne = document.createTextNode(resu[r])
+            some.appendChild(inne)
+            base = document.getElementById("results")
+            base.appendChild(some)
+        }
+})</script>
+</html>
