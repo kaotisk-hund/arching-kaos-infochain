@@ -1,0 +1,27 @@
+Hacking
+=======
+
+If you want to hack this you are more than welcome to do so. Instead of only trying to break though, you can contribute your solution to the problem.
+
+You can use this piece of software to maintain your own asset/token.
+
+It's for sure possible for someone to copy this program and use it to rollout another infochain on another asset.
+
+Things that would matter of research based on my opinion are:
+
+1. Render all transactions and decide how to render each BLOCK's action
+This would be nice to have and use in general, it's creative subject.
+
+2. Download latest transactions (like 5-100) and find the rest of the chain through BLOCK's previous IPFS CID
+This would interesting on figuring out if and how each BLOCK inherits the previous CIDs correctly. Assuming that anyone could forge the previous' value
+it would be really valuable to verify in comparison with the whole of transaction history which is always the safest route.
+
+3. Create subchains
+Since our genesis block is an empty file, it would be interesting to start chains with other values as well. For example, a file containing 0 or 1 or other integers, simple words and/or phrazes.
+
+Happy hacking
+
+Further reading
+---------------
+
+Please make sure you read the Whitepaper.

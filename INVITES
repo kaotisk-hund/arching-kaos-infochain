@@ -1,0 +1,66 @@
+Invites
+=======
+
+Since we are building a interconnected Radio station, we need to get more people in this.
+
+We invite people by sending them ARCHINGKAOS. Hitting an invite button and add them with email address or stellar address or something.
+
+Note: You need to know who you are inviting, personally.
+
+Handling
+--------
+Internally we create a key for us and a key for the invited. We give them their key like this
+
+- alice has access and wants to invite bob!
+
+- alice has pressed invite button
+
+- she puts the public gpg of bob
+
+- we craft a message that using:
+    gpg.public.bob
+    gpg.secret.alice
+- we create bob's address:
+    xlm.bob
+    ak.trustline(xlm.bob)
+    ak.fund(xlm.bob)
+- inside funding:
+    t.memo(aki(ipfs(encrypt(new(message)))))
+    
+- message is:
+    we enrypt for bob and we sign as alice
+    
+- bob can then visit archingkaos with his public key to find messages for them:
+    it's possible for bob to try a lot to get his files
+    if he see an invite, this means that he can spend 1 ARCHINGKAOS to someone else (in form of invite)  or make use of it inside the application ArchingKaos
+
+- the application knows that bob and only bob used this kind of asset because to spend it he has to sign the thing
+    so we use bob's secret key to sign the transaction message before we sent this. then we publish the packet of data [xlm, gpg]
+    if someone wants to run ArchingKaos radio they can
+
+In the end, we get a transaction of 4XLMs from the "client", with a REGISTER thing
+All messages are packed like this, so inside the send packet from IPFS we put two things:
+{"ipfsmessage","messagesign"} ( we have to firstly verify the message )
+(
+    "type":"ak/register",  // the transactions address to the one we create
+    "ipfsgpg",
+    "ipfssignature"
+}
+
+we reply to by creating an address for them:
+{
+    "type":"ak/user/add",
+    "akuser":"address that requested to register"
+}
+[
+    {
+        "type":"ak/mixtape/add",
+        "ipfs":"file",
+        "ipfs-detach":"of the file",
+        "ipfs-artist",
+        "ipfs-title"
+    },
+    {
+        "ipfs.gpg.signature of the previous object"
+    }
+]
