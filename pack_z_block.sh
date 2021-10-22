@@ -73,7 +73,7 @@ EOF
     ZBL="zblock"
     # and we add it on IPFS
     ZBLOCK=$(ipfs add -q $ZBL)
-    # echo $ZBLOCK
+    echo $ZBLOCK
 }
 
 title(){
