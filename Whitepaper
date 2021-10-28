@@ -5,15 +5,19 @@ The following is a document on how the Arching Kaos Infochain is constructed and
 
 1. What do we want to achieve?
 ------------------------------
-With AKI we are storing "permantly" metadata on a series of transactions, within the ARCHINGKAOS asset on Stellar Network.
+
+With AKI we are storing "permantly" metadata on a series of transactions, within the ARCHINGKAOS asset on 
+Stellar Network.
 
 2. How do we do that?
 ---------------------
 
-We make use of IPFS to store information in a way that we can retrieve them and validate them, serialize them and present them.
+We make use of IPFS to store information in a way that we can retrieve them and validate them, serialize 
+them and present them.
 
-IPFS is creating a CID for each file or folder is added to its repository. Furthermore, while connected to any network with other
-instances of IPFS running, the same information can be retrieved using the same CID.
+IPFS is creating a CID for each file or folder is added to its repository. Furthermore, while connected 
+to any network with other instances of IPFS running, the same information can be retrieved using the same 
+CID.
 
 We want to be descriptive on what we want to do, while we maintain a series or chain of information.
 
@@ -60,12 +64,14 @@ It should also validate that the DATA of the BLOCK is good to use.
 5. Ownership
 ------------
 
-There is no direct ownership, the database that is created in this system can be attached to the transaction sender or the GPG key of them.
-However, the correct word is "contributor". The contributor is the Stellar address, packed with the GPG key.
+There is no direct ownership, the database that is created in this system can be attached to the 
+transaction sender or the GPG key of them. However, the correct word is "contributor". The contributor is 
+the Stellar address, packed with the GPG key.
 
 6. Rendering
 ------------
 
-Whoever can decode the messages, can select to create a specific decoder adding new ACTIONs and appropriate verifiers for the DATA assumed to be valid.
+Whoever can decode the messages, can select to create a specific decoder adding new ACTIONs and 
+appropriate verifiers for the DATA assumed to be valid.
 
 They can then represend the decoded data, to gateways featuring APIs or UIs.
