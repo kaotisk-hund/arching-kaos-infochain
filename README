@@ -1,29 +1,74 @@
 Arching Kaos Infochain
 ======================
 
-A way of spliting messages and restruct them from an unordered list.
+A way of spliting messages into transactions of ARCHINGKAOS asset on Stellar Network and restruct them from an unordered/transaction list.
 
 See following notes on how this is achieved.
 
-1. Pack a ZBLOCK
-----------------
+Requirements
+------------
+
+Someone needs an amount of ARCHINGKAOS asset to make a transaction. Read ASSET_DISTRIBUTION for info on this.
+
+How it works/What is done
+-------------------------
+
+To make a transaction containing a message we need to know one piece of information that packs inside it, more pieces of information.
+
+As Whitepapers mentions, into a transaction of ARCHINGKAOS asset, there is a part (1/5) of an IPFS CID.
+When every part of this IPFS CID is been sent via ARCHINGKAOS asset, it can get restructured to the original.
+
+Pack a ZBLOCK
+-------------
+This IPFS CID is called ZBLOCK (z block <- ze block <- the block). It should be a JSON object with two IPFS CIDs:
+1. IPFS CID of a BLOCK ("block")
+2. IPFS CID of a detached PGP/GPG signature of the BLOCK ("block_signature")
+
 See pack_z_block.sh script
 
+BLOCK
+-----
 
-2. Split ZBLOCK's IPFS CID
---------------------------
+A BLOCK should contain some key data:
+- an action
+- a data JSON object relative to the action
+- the detached signature of the data JSON object
+- the gpg key of the signer/contributor of the piece of information
+- the previous ZBLOCK
+
+ACTION
+------
+
+Can be literally anything! A convinient way to use it is refering to an object or a subject and to a verb using URL like scheme:
+e.g.: mixtape/add
+
+DATA
+----
+
+Can be literally anything, but is specified by the ACTION's handler
+
+How do we transfer a ZBLOCK's IPFS CID ?
+----------------------------------------
 You can directly go to edcode.py using the function encode(IPFS CID)
+
+Example:
 
 We have the following IPFS hash
 
 QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH
 
+We mix it with dots in this way:
+
 ...QmbFMke1KXq..nYyBBWxB74N4c5SBnJMVAiMN..RcGu6x1AwQH...  mix with dots
+
+We then split it like this:
 
 ...QmbFMke1KXq
 ..nYyBBWxB74N4
 c5SBnJMVAiMN..
 RcGu6x1AwQH... split it
+
+We mix its parts, 2 parts at a time:
 
 ...QmbFMke1KXq..nYyBBWxB74N4
 ...QmbFMke1KXqc5SBnJMVAiMN..
@@ -31,7 +76,11 @@ RcGu6x1AwQH... split it
 ..nYyBBWxB74N4c5SBnJMVAiMN..
 ..nYyBBWxB74N4RcGu6x1AwQH...  mix it
 
+We send each the 5 strings:
 send tx 1 2 3 4 5
+
+Who did what?
+-------------
 
 Sender is NOT the owner of the data, is the contributor/distributor. Artists should be able to distribute their work.
 
@@ -39,23 +88,30 @@ To get the info back you need to decode the list of transactions on ARCHINGKAOS 
 
 To be more specific, see the edcode.decode(TRANSACTIONS) function from edcode.py file
 
-3. Download and extract the ZBLOCK
-----------------------------------
+On reverse now
+--------------
+
+Download and extract the ZBLOCK
+-------------------------------
 
 See dlx.py
 
 
-4. Verify that all the data is signed with the packed key
----------------------------------------------------------
+Verify that all the data is signed with the packed key
+------------------------------------------------------
+
+This could provide us with some authenticity that the actual key did post, not some random one which posted some public key.
 
 TODO
 
-5. Do extra checks
-------------------
+Do extra checks (if needed)
+---------------------------
 
 Example check at flac_check.py and ogg_check.py
 
-6. Create a procedure that bonds everything in a super app
-----------------------------------------------------------
+Create a procedure that bonds everything in a super app
+--------------------------------------------------------
+
+This would be really nice to have. Imagine that you could have news, mixtapes, announcements, blogs, videos, whatever and render them on one page with a nice UI.
 
 TODO
