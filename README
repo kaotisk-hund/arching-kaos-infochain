@@ -7,16 +7,31 @@ See following notes on how this is achieved.
 
 Requirements
 ------------
-
 Someone needs an amount of ARCHINGKAOS asset to make a transaction. Read ASSET_DISTRIBUTION for info on this.
 
 How it works/What is done
 -------------------------
-
 To make a transaction containing a message we need to know one piece of information that packs inside it, more pieces of information.
 
 As Whitepapers mentions, into a transaction of ARCHINGKAOS asset, there is a part (1/5) of an IPFS CID.
 When every part of this IPFS CID is been sent via ARCHINGKAOS asset, it can get restructured to the original.
+
+How is organized
+----------------
+src/		provides the source code, you need to compile nothing, it's bash and python scripts
+docs/		gathers all the documents needed (WIP)
+static/		provides html files that you can add to IPFS and load from an IPFS gateway. They are rendering the chain.
+checks/		provides with python written checks of file types
+tests/		provides tests of the algorithm
+drafts/		provides some drafts written (to be deleted)
+LICENSE		the license of the repository
+README		duh, you are reading it
+ROADMAP		provides a list of tasks to be solved
+Whitepaper	an extended document, overviewing the problem, the solution and its properties and impact
+clean.sh	clean up some files that are popping up when we run the code
+
+It also comes with a virtual environment tools and settings so it can be easier for someone to work with the repo.
+
 
 Pack a ZBLOCK
 -------------
@@ -28,7 +43,6 @@ See pack_z_block.sh script
 
 BLOCK
 -----
-
 A BLOCK should contain some key data:
 - an action
 - a data JSON object relative to the action
@@ -38,13 +52,11 @@ A BLOCK should contain some key data:
 
 ACTION
 ------
-
 Can be literally anything! A convinient way to use it is refering to an object or a subject and to a verb using URL like scheme:
 e.g.: mixtape/add
 
 DATA
 ----
-
 Can be literally anything, but is specified by the ACTION's handler
 
 How do we transfer a ZBLOCK's IPFS CID ?
@@ -81,7 +93,6 @@ send tx 1 2 3 4 5
 
 Who did what?
 -------------
-
 Sender is NOT the owner of the data, is the contributor/distributor. Artists should be able to distribute their work.
 
 To get the info back you need to decode the list of transactions on ARCHINGKAOS asset
@@ -90,28 +101,23 @@ To be more specific, see the edcode.decode(TRANSACTIONS) function from edcode.py
 
 On reverse now
 --------------
-
 Download and extract the ZBLOCK
 -------------------------------
-
 See dlx.py
 
 
 Verify that all the data is signed with the packed key
 ------------------------------------------------------
-
 This could provide us with some authenticity that the actual key did post, not some random one which posted some public key.
 
 TODO
 
 Do extra checks (if needed)
 ---------------------------
-
 Example check at flac_check.py and ogg_check.py
 
 Create a procedure that bonds everything in a super app
 --------------------------------------------------------
-
 This would be really nice to have. Imagine that you could have news, mixtapes, announcements, blogs, videos, whatever and render them on one page with a nice UI.
 
 TODO
