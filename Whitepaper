@@ -2,7 +2,14 @@ Introduction
 
 The following is a document on how an info-chain is may be constructed
 and on how it could be analyzed. Along the way, Arching Kaos Info-chain
-is introduced as a proof of concept.
+is introduced as a proof of concept. The last decade, block chain
+technology covered many aspects of financial and data exchange
+requirements. Many applications have been developed based on
+crypto-currency networks. Along side, smart contracts are a part of the
+many possibilities someone can use. To make a chain, most of these
+technologies have a reference into every block of data to the previous
+valid block. This is the block-chain. Nodes of the network validate each
+block so there is one block-chain.
 
 Arching Kaos
 
@@ -13,21 +20,8 @@ create a distributed and decentralized web-radio station.
 
 Infochain
 
-Introduction
-
 The word "Infochain" is used as reference to the chain of information we
-are producing. The last decade, block chain technology covered many
-aspects of financial and data exchange requirements. Many applications
-have been developed based on crypto-currency networks. Along side, smart
-contracts are a part of the many possibilities someone can use.
-
-Block chain technologies
-
-To make a chain, most of these technologies have a reference into every
-block of data to the previous valid block. This is the block-chain.
-Nodes of the network validate each block so there is one block-chain.
-
-How is Infochain any different
+are producing.
 
 Firstly, we build our "chain" on top of a block-chain. We use the
 transactions to pass information, so on top of a block and add
@@ -39,16 +33,12 @@ co-exist as well. Anything can be "posted" on the chain. It can be a
 fork of it, a whole different chain, or a "main" place. People can use
 encryption as well and post encrypted messages as well.
 
-Rendering
-
 There is also the need to read these information. To do that, an open
 protocol has been developed, since the use of such a chain is possible
 to be used for far too many cases. Different or bundled application can
 be developed to read the chain and present it to the public through
 internet. To do that we create one protocol, a predefined set of rules
 on how the information will be formatted and structured.
-
-How do we do that?
 
 We make use of IPFS to store information in a way that we can retrieve
 them and validate them, serialize them and present them.
@@ -72,7 +62,7 @@ first concern is to publish the IPFS CID to the Stellar network.
 How things need to be done in a way that works and is reliable in the
 sense of what we want to achieve. In particular, what we do is encode an
 IPFS CID, split it and add its sliced parts into memo text in
-transactions of an asset 5.1 on Stellar Network.
+transactions of an asset 6 on Stellar Network.
 
 Minimum transactions
 
@@ -99,8 +89,8 @@ in sequence for CID.
 
 Then, we append or prep-end the fitting amount of dots in each part to
 reach the maximum of 14bytes in order to reach maximum length of the
-transaction memo, so $DOTS_{3} = "..."$ and $DOTS_{2} = ".."$. For the
-first 2 parts we add prefixes and for the last ones we append:
+transaction memo, so DOTS₃ and DOTS₂. For the first 2 parts we add
+prefixes and for the last ones we append:
 Memo_(PartA) = DOTS₃ + CID_(a)
 Memo_(PartB) = DOTS₂ + CID_(b)
 Memo_(PartC) = CID_(c) + DOTS₂
@@ -147,10 +137,10 @@ Transaction₅ = Memo_(PartB) + Memo_(PartD)
 In total now we have 5 memos to send. Because of what we did, splitting
 1 IPFS CID into 5 transaction memos, we will send them by moving 0.2 of
 the asset for each transaction while for all of them it would be paid 1
-asset unit ($\frac{1}{5}=0.2$). In this case, we assume that this one
-pair of transactions made the containing message (CID) an asset called
-ZBLOCK4.4.1. However, payments can vary, which means that different
-amounts can be decoded differently as well.
+asset unit. In this case, we assume that this one pair of transactions
+made the containing message (CID) an asset called ZBLOCK5.1. However,
+payments can vary, which means that different amounts can be decoded
+differently as well.
 
 Decoding
 
@@ -237,8 +227,6 @@ BLOCK_SIGNATURE
 
 This is the IPFS CID of a detached PGP/GPG signature of the BLOCK.
 
-Properties
-
 Asset
 
 An asset, created on Stellar Network, is a representative model of a
@@ -249,7 +237,7 @@ the symbolic contribution to the network.
 
 Tokenomics
 
-See 6.3.1
+See 15.1
 
 The way that this system is designed, is to get into trusted hands that
 would not disrupt its problems. We will be investigating the testnet for
@@ -365,13 +353,13 @@ funds as it’s been proven to be a method of attack on assets and tokens
 on other block-chain networks.
 
 I don’t know how to prevent that, or what should I do to keep everyone
-off the funds. 6.3.1.
+off the funds. 15.1.
 
 Appendix
 
 Testing
 
-Someone needs an amount of asset to make a transaction. Read 6.3.1 for
+Someone needs an amount of asset to make a transaction. Read 15.1 for
 info on this.
 
 During the development and research common tools were used. Testing was
@@ -484,7 +472,7 @@ Further reading
 
 Since it’s possible for everyone to reproduce this system into other
 assets, I guess doing so is the best way to expand the system. Read more
-on 6.3.4.
+on 15.4.
 
 Invites
 
