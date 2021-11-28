@@ -31,7 +31,7 @@
 			Powered by&nbsp;<a href="https://www.kaotisk-hund.com">Kaotisk Hund</a>.
 		</div>
 	</body>
-	<script type="application/javascript" src="../QmcbR9LDKhDquP1yruQXbxztEUGmrCALfkjE6yBjasjfDs/openpgp.min.js"></script>
+	<script type="application/javascript" src="//ipfs.arching-kaos.com/ipfs/QmPVKHEwN8LCZzLLae8wHh6L5p4nEWvAUAUV7xbD15UiZj?filename=openpgp.js"></script>
 	<script>
 		var gateway = "//ipfs.arching-kaos.com/ipfs/"
 		var stellarExpert = "https://stellar.expert/explorer/public/account/"
@@ -50,7 +50,28 @@
 		function sttx(a){
 			return stellarOperation.concat(a)
 		}
-		function toggleDetails(t){(t.children[1].hidden===true?t.children[1].hidden=false:t.children[1].hidden=true)}
+		function toggleDetails(t){(t.children[2].hidden===true?t.children[2].hidden=false:t.children[2].hidden=true)}
+		async function getPreviousBlock(a,b){
+			console.log("A: ",a)
+			console.log("B: ",b)
+			try{
+				let res = await fetch(a)
+				res.json().then(v=>console.log("PREVIOUS_GET",v))
+			}
+			catch (error) {
+				console.log(error)
+			}
+		}
+		async function fromLatestPreviousGetAllPrevious(zc){
+			console.log("ZC: ", zc)
+			try{
+				let res = await fetch(gurl(zc))
+				res.json().then(v=>getPreviousBlock(gurl(v.block),v))
+			}
+			catch (error) {
+				console.log(error)
+			}
+		}
 		function zblockGrab(url){
 			fetch(url, {
 				method:'GET',
@@ -66,7 +87,7 @@
 			})
 		}
 		async function getzblock(u,r,iv){
-			console.log("Getting ZBLOCK: ",r)
+			//console.log("Getting ZBLOCK: ",r)
 			try{
 				let res = await fetch(u);
 				res.json().then(v=>getblock(gurl(v.block),v,r,iv))
@@ -76,7 +97,7 @@
 			}
 		}
 		async function getblock(u,zblock,zblockCID,iv){
-			console.log("Getting BLOCK: ",zblock.block,", from ZBLOCK: ",zblockCID)
+			//console.log("Getting BLOCK: ",zblock.block,", from ZBLOCK: ",zblockCID)
 			try{
 				let res = await fetch(u);
 				res.json().then(v=>getaction(v,zblock,zblockCID,iv))
@@ -86,7 +107,7 @@
 			}
 		}
 		async function getaction(block, zblock, zblockCID,iv){
-			console.log("Getting action on: ",block,zblock.block,zblockCID)
+			//console.log("Getting action on: ",block,zblock.block,zblockCID)
 			try{
 				if(block.action === 'mixtape/add'){
 					let res = await fetch(gurl(block.data));
@@ -132,7 +153,7 @@
 				"gpg":block.gpg,
 				"previous":block.previous
 			}
-			console.log(indexZBLOCK(mixtape))
+			//console.log(indexZBLOCK(mixtape))
 			mixtapes.push(mixtape)
 			showMixtape(mixtape)
 		}
@@ -170,41 +191,48 @@
 		 * @param mx
 		 */
 		function showMixtape(mx){
-			console.log("Working on: ",mx)
+			//console.log("Working on: ",mx)
 			template = `
 				<div class="mixtape" id="${mx.zblock}">
 					<h3>${mx.artist} - ${mx.title}</h3>
 					<audio controls="">
 						<source src="${gurl(mx.file)}">
 					</audio>
-					<div class="details-container" onclick="toggleDetails(this)">
-					<h4>Details</h4><p><em>(click to expand/hide)</em></p>
-					<div class="details">
-						<h5>Infochain</h5>
-						<p>ZBLOCK: <a href="${gurl(mx.zblock)}">${mx.zblock}</a></p>
-						<p>BLOCK: <a href="${gurl(mx.block)}">${mx.block}</a></p>
-						<p>BLOCK signature: <a href="${gurl(mx.blocksignature)}">${mx.blocksignature}</a></p>
-						<p>Key is <a href="${gurl(mx.gpg)}">${mx.gpg}</a></p>
-						<p>Data signature: <a href="${gurl(mx.datasig)}">${mx.datasig}</a></p>
-						<p>File signature: <a href="${gurl(mx.filesig)}">${mx.filesig}</a></p>
-						<p>Previous: <a href="${gurl(mx.previous)}">${mx.previous}</a></p>
-						<h5>Transaction details</h5>
-						<p>BD transaction <a href="${sttx(bd.tx)}">${bd.tx}</a> with memo:"${bd.memo}" on ${bd.ts}</p>
-						<p>Contributor <a href="${staccurl(bd.from)}">${bd.from}</a> to <a href="${staccurl(bd.to)}">${bd.to}</a></p>
-						<p>BC transaction <a href="${sttx(bc.tx)}">${bc.tx}</a> with memo:"${bc.memo}" on ${bc.ts}</p>
-						<p>Contributor <a href="${staccurl(bc.from)}">${bc.from}</a> to <a href="${staccurl(bc.to)}">${bc.to}</a></p>
-						<p>AD transaction <a href="${sttx(ad.tx)}">${ad.tx}</a> with memo:"${ad.memo}" on ${ad.ts}</p>
-						<p>Contributor <a href="${staccurl(ad.from)}">${ad.from}</a> to <a href="${staccurl(ad.to)}">${ad.to}</a></p>
-						<p>AC transaction <a href="${sttx(ac.tx)}">${ac.tx}</a> with memo:"${ac.memo}" on ${ac.ts}</p>
-						<p>Contributor <a href="${staccurl(ac.from)}">${ac.from}</a> to <a href="${staccurl(ac.to)}">${ac.to}</a></p>
-						<p>AB transaction <a href="${sttx(ab.tx)}">${ab.tx}</a> with memo:"${ab.memo}"on ${ab.ts}</p>
-						<p>Contributor <a href="${staccurl(ab.from)}">${ab.from}</a> to <a href="${staccurl(ab.to)}">${ab.to}</a></p>
+					<div class="utilities">
+						<a href="${gurl(mx.file)}">Permalink</a> ${getDetails(mx)}
+						<p id="gotop-link"><a href="#top"><span class="mdi mdi-arrow-up"></span> Top</a></p>
 					</div>
-					<p id="gotop-link"><a href="#top"><span class="mdi mdi-arrow-up"></span> Top</a></p><hr>	
+	       				<hr>	
 				</div>`	
 			let base = document.querySelector(".container")
 			base.innerHTML+=template
-			ohjeeh(mx)
+		}
+		function getDetails(mx){
+			return `
+				<div class="details-container" onclick="toggleDetails(this)">
+				<h4>Details</h4><p><em>(click to expand/hide)</em></p>
+				<div class="details" hidden="">
+					<h5>Infochain</h5>
+					<p>ZBLOCK: <a target="_blank" href="${gurl(mx.zblock)}">${mx.zblock}</a></p>
+					<p>BLOCK: <a target="_blank" href="${gurl(mx.block)}">${mx.block}</a></p>
+					<p>BLOCK signature: <a target="_blank" href="${gurl(mx.blocksignature)}">${mx.blocksignature}</a></p>
+					<p>Key is <a target="_blank" href="${gurl(mx.gpg)}">${mx.gpg}</a></p>
+					<p>Data signature: <a target="_blank" href="${gurl(mx.datasig)}">${mx.datasig}</a></p>
+					<p>File signature: <a target="_blank" href="${gurl(mx.filesig)}">${mx.filesig}</a></p>
+					<p>Previous: <a target="_blank" href="${gurl(mx.previous)}">${mx.previous}</a></p>
+					<h5>Transaction details</h5>
+					<p>BD transaction <a target="_blank" href="${sttx(bd.tx)}">${bd.tx}</a> with memo:"${bd.memo}" on ${bd.ts}</p>
+					<p>Contributor <a target="_blank" href="${staccurl(bd.from)}">${bd.from}</a> to <a target="blank" ="${staccurl(bd.to)}">${bd.to}</a></p>
+					<p>BC transaction <a target="_blank" href="${sttx(bc.tx)}">${bc.tx}</a> with memo:"${bc.memo}" on ${bc.ts}</p>
+					<p>Contributor <a target="_blank" href="${staccurl(bc.from)}">${bc.from}</a> to <a target="blank" ="${staccurl(bc.to)}">${bc.to}</a></p>
+					<p>AD transaction <a target="_blank" href="${sttx(ad.tx)}">${ad.tx}</a> with memo:"${ad.memo}" on ${ad.ts}</p>
+					<p>Contributor <a target="_blank" href="${staccurl(ad.from)}">${ad.from}</a> to <a target="blank" ="${staccurl(ad.to)}">${ad.to}</a></p>
+					<p>AC transaction <a target="_blank" href="${sttx(ac.tx)}">${ac.tx}</a> with memo:"${ac.memo}" on ${ac.ts}</p>
+					<p>Contributor <a target="_blank" href="${staccurl(ac.from)}">${ac.from}</a> to <a target="blank" ="${staccurl(ac.to)}">${ac.to}</a></p>
+					<p>AB transaction <a target="_blank" href="${sttx(ab.tx)}">${ab.tx}</a> with memo:"${ab.memo}"on ${ab.ts}</p>
+					<p>Contributor <a target="_blank" href="${staccurl(ab.from)}">${ab.from}</a> to <a target="blank" ="${staccurl(ab.to)}">${ab.to}</a></p>
+				</div>`
+			//ohjeeh(mx)
 		}
 		function findLatestTransactionFromZblockCID(zblockCID,iv){
 			for (i in iv){
@@ -231,6 +259,7 @@
 			for (r in res){
 				getzblock(gurl(res[r]),res[r],iv)
 			}
+			fromLatestPreviousGetAllPrevious(res[res.length-1])
 		}
 		let txs = []
 		fetch('//api.stellar.expert/explorer/public/payments?asset=ARCHINGKAOS-GB4QVKD6NW3CSNO5TNPARAWNPPXOPSSTKB35XCWB7PUNBIQTK3DVELB2&order=des&limit=2000')
@@ -281,7 +310,7 @@
 										val=ones[n].concat(twos[tw].substr(14),tres[tr].substr(14))
 										vals.push(val)
 										resu.push(val.replace(/\./g,""))
-										console.log(val.replace(/\./g,""))
+										//console.log(val.replace(/\./g,""))
 										iv.push([val.replace(/\./g,""), fivs[fi], findTransaction(fivs[fi],txs), fors[fo],findTransaction(fors[fo],txs), tres[tr],findTransaction(tres[tr],txs), twos[tw],findTransaction(twos[tw],txs), ones[n],findTransaction(ones[n],txs)])
 									}
 								}
