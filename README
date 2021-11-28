@@ -15,7 +15,7 @@ Latest version of the ./static/mixtape-parser.html can be added to IPFS and view
 
 If you are not part of the swarm, it's better to use https://ipfs.arching-kaos.com gateway. You can visit the latest version of the swarm by going to this address:
 
-https://ipfs.arching-kaos.com/ipfs/QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
+https://ipfs.arching-kaos.com/ipfs/QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
 
 How it works/What is done
 -------------------------
@@ -75,24 +75,24 @@ Example:
 
 We have the following IPFS hash
 
-QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
+QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
 
 We mix it with dots in this way:
 
-...QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
+...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
 
 We then split it like this:
 
-...QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
+...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
 ..nYyBBWxB74N4
 c5SBnJMVAiMN..
 RcGu6x1AwQH... split it
 
 We mix its parts, 2 parts at a time:
 
-...QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
-...QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
-...QmcbpyqxWfmJDTEiqvgE8uAEDmnaSGTsHaiNHZCdUAXBfd
+...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
+...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
+...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
 ..nYyBBWxB74N4c5SBnJMVAiMN..
 ..nYyBBWxB74N4RcGu6x1AwQH...  mix it
 
