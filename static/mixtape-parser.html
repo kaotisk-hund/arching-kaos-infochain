@@ -18,10 +18,12 @@
 			<h1>Arching Kaos Radio</h1>
 			<p>Fully decentralized and distributed version</p>
 		</header>
-		<h2>Mixtapes</h2>
-		<div id="results">
+		<div class="mixtapes">
+			<h2>Mixtapes</h2>
+			<div id="results"></div>
+			<div class="container"></div>
 		</div>
-		<div class="container"></div>
+		<div class=""></div>
 		<div class="donations">
 			<h3>Donations</h3>
 			<p>Stellar:GCHSUH6TBKKY37EBPCIPBLYG42L5M7LE5UBUV3IEZVUIAXNCR4CR4ZMW</p>
@@ -113,6 +115,10 @@
 					let res = await fetch(gurl(block.data));
 					res.json().then(v=>indexMixtape(v,block,zblock,zblockCID,iv))
 				}
+				else if(block.action === 'news/add'){
+					let res = await fetch(gurl(block.data));
+					res.json().then(v=>indexNews(v,block,zblock,zblockCID,iv))
+				}
 			}
 			catch (error) {
 				console.log(error)
@@ -121,7 +127,45 @@
 		async function getSignaturesAndKey(s)
 		{
 			console.log(s)
-				}
+		}
+		async function indexNews(data,block,zblock,zblockCID,iv){
+			console.log(data)
+			content = await fetch(gurl(data.ipfs)).then(x=>x.text())
+			tx = txs[findLatestTransactionFromZblockCID(zblockCID, iv)]
+			atx = findTransactionsFromZBLOCKCID(zblockCID,iv)
+			ab = txs[atx[4]]
+			ac = txs[atx[3]]
+			ad = txs[atx[2]]
+			bc = txs[atx[1]]
+			bd = txs[atx[0]]
+			news_thing = {
+				"zblock":zblockCID,
+				"block":zblock.block,
+				"blocksignature":zblock.block_signature,
+				"ltx": tx.tx,
+				"from": tx.from,
+				"to": tx.to,
+				"memo": tx.memo,
+				"ab": ab,
+				"ac": ac,
+				"ad": ad,
+				"bc": bc,
+				"bd": bd,
+				"action": block.action,
+				"data":block.data,
+				"featureImage":data.image,
+				"content": content,
+				"date": data.date,
+				"file": data.ipfs,
+				"filesig":data.detach,
+				"datasig":block.detach,
+				"gpg":block.gpg,
+				"previous":block.previous
+			}
+			console.log(indexZBLOCK(news_thing))
+			news.push(news_thing)
+			showNewThing(news_thing)
+		}
 		async function indexMixtape(data,block,zblock,zblockCID,iv){
 			tx = txs[findLatestTransactionFromZblockCID(zblockCID, iv)]
 			atx = findTransactionsFromZBLOCKCID(zblockCID,iv)
@@ -186,6 +230,13 @@
 			]
 			return x
 		}
+		function utilities(mx){
+			return `<div class="utilities">
+						<a href="${gurl(mx.file)}">Permalink</a> ${getDetails(mx)}
+						<p id="gotop-link"><a href="#top"><span class="mdi mdi-arrow-up"></span> Top</a></p>
+					</div>
+					<hr>`
+		}
 		/*
 		 * Gets a mixtape type data and shows it to the .container div element.
 		 * @param mx
@@ -198,13 +249,24 @@
 					<audio controls="">
 						<source src="${gurl(mx.file)}">
 					</audio>
-					<div class="utilities">
-						<a href="${gurl(mx.file)}">Permalink</a> ${getDetails(mx)}
-						<p id="gotop-link"><a href="#top"><span class="mdi mdi-arrow-up"></span> Top</a></p>
-					</div>
-	       				<hr>	
-				</div>`	
+					${utilities(mx)}
+				</div>`
 			let base = document.querySelector(".container")
+			base.innerHTML+=template
+		}
+		function showNewThing(mx){
+			console.log("Working on: ",mx)
+			template = `
+				<div class="news-thing" id="${mx.zblock}">
+					<h3>${(mx.title ? mx.title : "No title")}</h3>
+					<div class="article-details">
+						<em>${(mx.date ? mx.date : "No date" )}</em>
+						${(mx.featureImage ? "<img src="+gurl(mx.featureImage)+">" : "No image")}
+						</div>
+					<div class="content">${mx.content}</div>
+					${utilities(mx)}
+				</div>`
+			let base = document.querySelector(".news-container")
 			base.innerHTML+=template
 		}
 		function getDetails(mx){
