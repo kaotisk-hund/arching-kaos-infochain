@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{paper}
+\documentclass[10pt,a4paper,twocolumn]{paper}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
@@ -21,7 +21,7 @@
 
 
 	\section{Arching Kaos}\label{arching-kaos}
-	The words "Arching Kaos" are referring to the Asset used on Stellar Network, a decentralized block-chain. There is a project called "Arching Kaos" which is issuing and distributing the Asset. It's main cause is to create a distributed and decentralized web-radio station.
+	The words "Arching Kaos" are referring to the Asset\footnote{Asset is the name of a certain amount of tokens where holders of them can perform transactions.} used on Stellar Network, a decentralized\footnote{Decentralized is a cluster of computers working together in a network. They mostly with mesh topology which has no single point of failure.} block-chain\footnote{Block chain is a "chain" of blocks. Blocks mostly contain information. Chain is formed because every block commonly say which chain belongs to and which block was just before that. Hence, from a certain block we can retrieve the chain before it.}. There is a project called "Arching Kaos" which is issuing and distributing the Asset. It's main cause is to create a distributed and decentralized web-radio station.
 	
 	\section{Infochain}\label{infochain}
 	The word "Infochain" is used as reference to the chain of information we are producing.
@@ -224,13 +224,17 @@ For Python, the installation on a local environment of stellar-sdk was used.
 
 \subsection{Encoding of IPFS CID}\label{example-encoding}
 
-We have the following IPFS CID of an empty file
+We have the following IPFS CID of an empty file (is broken with spaces to fit in the document):\\
+QmbFMke1KXq\\
+nYyBBWxB74N4\\
+c5SBnJMVAiMN\\
+RcGu6x1AwQH\\
 
-QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH
-
-We mix it with dots in this way
-
-...QmbFMke1KXq..nYyBBWxB74N4c5SBnJMVAiMN..RcGu6x1AwQH...
+We mix it with dots in this way:
+...QmbFMke1KXq\\
+..nYyBBWxB74N4\\
+c5SBnJMVAiMN..\\
+RcGu6x1AwQH...\\
 
 \subsection{Split encoded text to 4 parts}\label{example-split}
 
