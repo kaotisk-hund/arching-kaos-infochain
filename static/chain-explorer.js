@@ -28,39 +28,48 @@ function toggleDetails(t){
 async function doThis(previous_zblock){
 	console.log(previous_zblock)
 	try {
-		let res = await fetch(gurl(previous_zblock))
-		if (res.text()==""){
-			console.log("Genesis?")
-		}
-		else {
-			res.json().then(v=>console.log("i am lost",v))
-		}
+		let res = fetch(gurl(previous_zblock))
+		.then(response => {
+			const contentType = response.headers.get('content-type');
+			if (!contentType || !contentType.includes('application/json')) {
+				if (contentType.includes('text/plain')){
+					return response.text();
+				}
+//				throw new TypeError("Oops, we haven't got JSON!");
+			}
+			return response.json();
+			})
+		.then(v=>(v.block?doThis(v.block):console.log("Possibly genesis: ",v)))
+	//		else{
+	//			console.log("not that cool")
+	//		}
+		//	res.json().then(v=>getPreviousBlock(v.block,v.block_signature))
+		
 	}
 	catch (error) {
 		console.log(error)
 	}
 }
-async function getPreviousBlock(a,b){
-	console.log("A: ",a)
-	console.log("B: ",b)
-	try{
-		let res = await fetch(a)
-		res.json().then(v=>console.log("PREVIOUS_GET",v))
-	}
-	catch (error) {
-		console.log(error)
-	}
-}
-async function fromLatestPreviousGetAllPrevious(zc){
-	console.log("ZC: ", zc)
-	try{
-		let res = await fetch(gurl(zc))
-		res.json().then(v=>console.log("getPreviousBlock(",gurl(v.block),v))
-	}
-	catch (error) {
-		console.log(error)
-	}
-}
+//async function getPreviousBlock(a,b){
+//	try{
+//		let res = await fetch(gurl(a))
+//		if(res.json().then(v=>(v.previous?doThis(v.previous):console.log("Error with PREVIOUS_GET: ",v)))
+//			console.log("??????")
+//	}
+//	catch (error) {
+//		console.log(error)
+//	}
+//}
+//async function fromLatestPreviousGetAllPrevious(zc){
+//	console.log("ZC: ", zc)
+//	try{
+//		let res = await fetch(gurl(zc))
+//		res.json().then(v=>console.log("getPreviousBlock(",gurl(v.block),v))
+//	}
+//	catch (error) {
+//		console.log(error)
+//	}
+//}
 function zblockGrab(url){
 	fetch(url, {
 		method:'GET',
@@ -124,7 +133,6 @@ async function indexDataBlocks(data,block,zblock,zblockCID,iv){
 	//content = await fetch(gurl(data.ipfs)).then(x=>x.text())
 	tx = txs[findLatestTransactionFromZblockCID(zblockCID, iv)]
 	atx = findTransactionsFromZBLOCKCID(zblockCID,iv)
-	await doThis(block.previous)
 	ab = txs[atx[4]]
 	ac = txs[atx[3]]
 	ad = txs[atx[2]]
@@ -145,9 +153,7 @@ async function indexDataBlocks(data,block,zblock,zblockCID,iv){
 		"bd": bd,
 		"action": block.action,
 		"data":block.data,
-//				"featureImage":data.image,
 		"content": content,
-//				"date": data.date,
 		"file": data.ipfs,
 		"filesig":data.detach,
 		"datasig":block.detach,
@@ -157,40 +163,34 @@ async function indexDataBlocks(data,block,zblock,zblockCID,iv){
 	//console.log(indexZBLOCK(data_thing))
 	datas.push(data_thing)
 	showDataThing(data_thing)
+	doThis(data_thing.previous)
+	renderDataToPage=true
+	if(renderDataToPage){
+		if(block.action === 'mixtape/add'){
+			let res = await fetch(gurl(block.data));
+			res.json().then(v=>indexMixtape(v,block,zblock,zblockCID,iv))
+		}
+		else if(block.action === 'news/add'){
+			let res = await fetch(gurl(block.data));
+			res.json().then(v=>indexNews(v,block,zblock,zblockCID,iv))
+		}
+		else{
+			console.log("Genesis?????")
+		}
+	}
+
+
 }
-async function indexNews(data,block,zblock,zblockCID,iv){
+async function indexNews(dataIndexed,data,block,zblock,zblockCID,iv){
 	//console.log(data)
 	content = await fetch(gurl(data.ipfs)).then(x=>x.text())
 	tx = txs[findLatestTransactionFromZblockCID(zblockCID, iv)]
 	atx = findTransactionsFromZBLOCKCID(zblockCID,iv)
-	ab = txs[atx[4]]
-	ac = txs[atx[3]]
-	ad = txs[atx[2]]
-	bc = txs[atx[1]]
-	bd = txs[atx[0]]
 	news_thing = {
-		"zblock":zblockCID,
-		"block":zblock.block,
-		"blocksignature":zblock.block_signature,
-		"ltx": tx.tx,
-		"from": tx.from,
-		"to": tx.to,
-		"memo": tx.memo,
-		"ab": ab,
-		"ac": ac,
-		"ad": ad,
-		"bc": bc,
-		"bd": bd,
-		"action": block.action,
 		"data":block.data,
 		"featureImage":data.image,
 		"content": content,
 		"date": data.date,
-		"file": data.ipfs,
-		"filesig":data.detach,
-		"datasig":block.detach,
-		"gpg":block.gpg,
-		"previous":block.previous
 	}
 //	console.log(indexZBLOCK(news_thing))
 	news.push(news_thing)
@@ -365,7 +365,7 @@ function gatherMixtapes(res,iv){
 	for (r in res){
 		getzblock(gurl(res[r]),res[r],iv)
 	}
-	fromLatestPreviousGetAllPrevious(res[res.length-1])
+//	fromLatestPreviousGetAllPrevious(res[res.length-1])
 }
 let txs = []
 fetch('//api.stellar.expert/explorer/public/payments?asset=ARCHINGKAOS-GB4QVKD6NW3CSNO5TNPARAWNPPXOPSSTKB35XCWB7PUNBIQTK3DVELB2&order=des&limit=2000')
