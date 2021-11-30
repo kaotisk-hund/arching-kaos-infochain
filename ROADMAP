@@ -8,6 +8,7 @@ AKI Roadmap
 	[ ] messages (in away that is close to the email standards)
 	[ ] shop
 	[x] news
+	[x] explorer
 3. Create a page that read profile, using Stellar addresses. ProfileHandler()
 	[ ] see if there is a data variable called zprofile on the address
 	[ ] see if there is a post on their transactions with action=="profile/add"
