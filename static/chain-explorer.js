@@ -53,7 +53,7 @@ async function IPNSfetcher(ipns) {
 			}
 			return response.json()
 		})
-		.then(v=>(v?console.log(v.profile.nickname):console.log("error?")))
+		.then(v=>(v?console.log("Nickname found: ", v.profile.nickname):console.log("error?")))
 	}
 	catch (error) {
 		console.log(error)
@@ -61,7 +61,7 @@ async function IPNSfetcher(ipns) {
 }
 async function getNickname(address){
 	try {
-		console.log("We are going to ask for this: "+getProfileURL(address))
+		//console.log("We are going to ask for this: "+getProfileURL(address))
 		let response = await fetch(getProfileURL(address))
 		.then(response => {
 			const contentType = response.headers.get('content-type');
@@ -87,7 +87,7 @@ async function getNickname(address){
 }
 
 async function doThis(previous_zblock){
-	console.log(previous_zblock)
+//	console.log(previous_zblock)
 	try {
 		let res = fetch(gurl(previous_zblock))
 		.then(response => {
@@ -103,7 +103,7 @@ async function doThis(previous_zblock){
 				}
 //				throw new TypeError("Oops, we haven't got JSON!");
 			}
-			console.log("L:70")
+//			console.log("L:70")
 			return response.json();
 			})
 		.then(v=>(v.block?doThis(v.block):console.log("A point in the algorithm: ",v)))
@@ -193,7 +193,7 @@ async function getaction(block, zblock, zblockCID,iv){
 }
 async function getSignaturesAndKey(s)
 {
-	console.log(s)
+	console.log("TODO: About to get signature: ", s)
 }
 async function indexDataBlocks(data,block,zblock,zblockCID,iv){
 	content = JSON.stringify(data,null,'\t')
@@ -469,23 +469,23 @@ fetch('//api.stellar.expert/explorer/public/payments?asset=ARCHINGKAOS-GB4QVKD6N
 				}
 			}
 		} else {
-			console.log("transaction ",txs[y]," skipped")
+			console.log("Transaction ", txs[y].id, " was skipped: No MEMO")
 		}
 	}
 	for (n in ones){
 		for (tw in twos){
 			for (tr in tres){
 				if (ones[n].substr(0,14) == twos[tw].substr(0,14) && ones[n].substr(0,14) == tres[tr].substr(0,14)){
-					console.log("found")
+					console.log("Found possible ZBLOCK! indexes:", n, tw, tr)
 					for (fo in fors){
 						for (fi in fivs){
 							if (ones[n].substr(14) == fors[fo].substr(0,14) && ones[n].substr(14) == fivs[fi].substr(0,14)){
-								console.log("Validated")
 								val=ones[n].concat(twos[tw].substr(14),tres[tr].substr(14))
 								vals.push(val)
 								resu.push(val.replace(/\./g,""))
 								//console.log(val.replace(/\./g,""))
 								iv.push([val.replace(/\./g,""), fivs[fi], findTransaction(fivs[fi],txs), fors[fo],findTransaction(fors[fo],txs), tres[tr],findTransaction(tres[tr],txs), twos[tw],findTransaction(twos[tw],txs), ones[n],findTransaction(ones[n],txs)])
+								console.log("Validated: "+val.replace(/\./g,""))
 							}
 						}
 					}
