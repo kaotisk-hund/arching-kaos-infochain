@@ -87,56 +87,35 @@ async function getNickname(address){
 }
 
 async function doThis(previous_zblock){
-//	console.log(previous_zblock)
 	try {
-		let res = fetch(gurl(previous_zblock))
-		.then(response => {
-			const contentType = response.headers.get('content-type');
-			if (!contentType || !contentType.includes('application/json')) {
-				if (contentType.includes('text/plain')){
-					if (!response){
-						return "Possibly GENESIS"
+		if (previous_zblock === "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH" ) {
+			console.log("Reached GENESIS")
+		}
+		else {
+			let res = fetch(gurl(previous_zblock))
+			.then(response => {
+				const contentType = response.headers.get('content-type');
+				if (!contentType || !contentType.includes('application/json')) {
+					if (contentType.includes('text/plain')){
+						if (!response){
+							return "Possibly GENESIS"
+						}
+						else {
+							return "Not genesis but got text: "+response.text()
+						}
 					}
-					else {
-						return "Not genesis but got text: "+response.text()
-					}
+	//				throw new TypeError("Oops, we haven't got JSON!");
 				}
-//				throw new TypeError("Oops, we haven't got JSON!");
-			}
-//			console.log("L:70")
-			return response.json();
-			})
-		.then(v=>(v.block?doThis(v.block):console.log("A point in the algorithm: ",v)))
-	//		else{
-	//			console.log("not that cool")
-	//		}
-		//	res.json().then(v=>getPreviousBlock(v.block,v.block_signature))
-		
+				return response.json();
+				})
+			.then(v=>(v.block?doThis(v.block):console.log("A point in the algorithm: ",v)))
+		}
 	}
 	catch (error) {
 		console.log(error)
 	}
 }
-//async function getPreviousBlock(a,b){
-//	try{
-//		let res = await fetch(gurl(a))
-//		if(res.json().then(v=>(v.previous?doThis(v.previous):console.log("Error with PREVIOUS_GET: ",v)))
-//			console.log("??????")
-//	}
-//	catch (error) {
-//		console.log(error)
-//	}
-//}
-//async function fromLatestPreviousGetAllPrevious(zc){
-//	console.log("ZC: ", zc)
-//	try{
-//		let res = await fetch(gurl(zc))
-//		res.json().then(v=>console.log("getPreviousBlock(",gurl(v.block),v))
-//	}
-//	catch (error) {
-//		console.log(error)
-//	}
-//}
+
 function zblockGrab(url){
 	fetch(url, {
 		method:'GET',
@@ -151,11 +130,16 @@ function zblockGrab(url){
 		}
 	})
 }
-async function getzblock(u,r,iv){
+async function getzblock(r,iv){
 	//console.log("Getting ZBLOCK: ",r)
 	try{
-		let res = await fetch(u);
-		res.json().then(v=>getblock(gurl(v.block),v,r,iv))
+		if (r === "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH"){
+			console.log("FOUND GENESIS... at last! :)")
+		}
+		else {
+			let res = await fetch(gurl(r));
+			res.json().then(v=>getblock(gurl(v.block),v,r,iv))
+		}
 	}
 	catch (error) {
 		console.log(error)
@@ -174,18 +158,8 @@ async function getblock(u,zblock,zblockCID,iv){
 async function getaction(block, zblock, zblockCID,iv){
 	//console.log("Getting action on: ",block,zblock.block,zblockCID)
 	try{
-	//	if(block.action === 'mixtape/add'){
-	//		let res = await fetch(gurl(block.data));
-	//		res.json().then(v=>indexMixtape(v,block,zblock,zblockCID,iv))
-	//	}
-	//	else if(block.action === 'news/add'){
-	//		let res = await fetch(gurl(block.data));
-	//		res.json().then(v=>indexNews(v,block,zblock,zblockCID,iv))
-	//	}
-	//	else{
-			let res = await fetch(gurl(block.data));
-			res.json().then(v=>indexDataBlocks(v,block,zblock,zblockCID,iv))
-	//	}
+		let res = await fetch(gurl(block.data));
+		res.json().then(v=>indexDataBlocks(v,block,zblock,zblockCID,iv))
 	}
 	catch (error) {
 		console.log(error)
@@ -431,7 +405,7 @@ function findTransaction(bd,txs){
 }
 function gatherMixtapes(res,iv){
 	for (r in res){
-		getzblock(gurl(res[r]),res[r],iv)
+		getzblock(res[r],iv)
 	}
 //	fromLatestPreviousGetAllPrevious(res[res.length-1])
 }
