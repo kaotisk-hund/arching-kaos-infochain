@@ -1,6 +1,10 @@
 var gateway = "//ipfs.arching-kaos.com/ipfs/"
 var stellarExpert = "https://stellar.expert/explorer/public/account/"
 var stellarOperation = "https://stellar.expert/explorer/public/tx/"
+var ipns = "//ipfs.arching-kaos.com/ipns/"
+function getProfileURL(address){
+	return "https://horizon.stellar.org/accounts/"+address+"/data/config"
+}
 var some=""
 var template=""
 var mixtapes=[]
@@ -16,15 +20,72 @@ function staccurl(a){
 function sttx(a){
 	return stellarOperation.concat(a)
 }
-
+function ipnser(a) {
+	return ipns.concat(a)
+}
 function returnIFrame(src){
 	let base = document.querySelector(".news-container")
-	template = `<iframe src="${src.link}"></iframe>`
+	template = `<iframe src="${src.attributes.link.nodeValue}" id="the-frame"></iframe>`
 	base.innerHTML+=template
+	document.selectElementById("the-frame").color("#000")
 }
 function toggleDetails(t){
 	(t.children[2].hidden===true?t.children[2].hidden=false:t.children[2].hidden=true)
 }
+function b64_to_utf8( str ) {
+	return decodeURIComponent(escape(window.atob( str )));
+}
+async function IPNSfetcher(ipns) {
+	try {
+		let response = await fetch(ipnser(ipns))
+		.then(response => {
+			const contentType = response.headers.get('content-type');
+			if (!contentType || !contentType.includes('application/json')) {
+				if (contentType.includes('text/plain')){
+					if (!response){
+						return response.text()
+					}
+					else {
+						return "text "+response.text()
+					}
+				}
+				//throw new TypeError("lol");
+			}
+			return response.json()
+		})
+		.then(v=>(v?console.log(v.profile.nickname):console.log("error?")))
+	}
+	catch (error) {
+		console.log(error)
+	}
+}
+async function getNickname(address){
+	try {
+		console.log("We are going to ask for this: "+getProfileURL(address))
+		let response = await fetch(getProfileURL(address))
+		.then(response => {
+			const contentType = response.headers.get('content-type');
+			if (!contentType || !contentType.includes('application/json')) {
+				if (contentType.includes('text/plain')){
+					if(!response){
+						return "GOT: text/plain... "+response.text()
+					}
+					else {
+						return "Text/plain: "+response.text()
+					}
+				}
+//				throw new TypeError("NotJSON");
+			}
+			return response.json()
+		})
+		.then(v=>(v?IPNSfetcher(b64_to_utf8(v.value)):console.log("unknown error"+address+" "+v.text())))
+	}
+	catch (error) {
+		console.log(error)
+	}
+
+}
+
 async function doThis(previous_zblock){
 	console.log(previous_zblock)
 	try {
@@ -33,13 +94,19 @@ async function doThis(previous_zblock){
 			const contentType = response.headers.get('content-type');
 			if (!contentType || !contentType.includes('application/json')) {
 				if (contentType.includes('text/plain')){
-					return response.text();
+					if (!response){
+						return "Possibly GENESIS"
+					}
+					else {
+						return "Not genesis but got text: "+response.text()
+					}
 				}
 //				throw new TypeError("Oops, we haven't got JSON!");
 			}
+			console.log("L:70")
 			return response.json();
 			})
-		.then(v=>(v.block?doThis(v.block):console.log("Possibly genesis: ",v)))
+		.then(v=>(v.block?doThis(v.block):console.log("A point in the algorithm: ",v)))
 	//		else{
 	//			console.log("not that cool")
 	//		}
@@ -161,6 +228,7 @@ async function indexDataBlocks(data,block,zblock,zblockCID,iv){
 		"previous":block.previous
 	}
 	//console.log(indexZBLOCK(data_thing))
+	await getNickname(tx.from)
 	datas.push(data_thing)
 	showDataThing(data_thing)
 	doThis(data_thing.previous)
