@@ -1,0 +1,15 @@
+#!/bin/bash
+export IPFS="$(which ipfs)"
+export ROOT=$HOME
+export WORKDIR="$ROOT/.arching-kaos"
+export CONFIGDIR="$WORKDIR/config"
+export GENESIS="$CONFIGDIR/genesis"
+export GENESISASC="$CONFIGDIR/genesis.asc"
+export ZGENESIS="$CONFIGDIR/zgenesis"
+export ZGENESISASC="$CONFIGDIR/zgenesisasc"
+export ZCHAIN="$CONFIGDIR/zchain"
+export ZCHAINASC="$CONFIGDIR/zchain.asc"
+export ZZCHAIN="$CONFIGDIR/zzchain"
+export ZLIST="$WORKDIR/zlist"
+export ZLATEST="$WORKDIR/zlatest"
+export LOGSFILE="$WORKDIR/logs"
