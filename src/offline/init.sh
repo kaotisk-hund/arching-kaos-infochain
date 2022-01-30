@@ -4,6 +4,8 @@ source ./config.sh
 echo This is our work dir: $WORKDIR
 if [[ ! -d $WORKDIR ]] ; then mkdir $WORKDIR ;fi
 if [[ ! -d $CONFIGDIR ]] ; then mkdir $CONFIGDIR ;fi
+if [[ ! -d $BINDIR ]]; then mkdir $BNDIR ;fi
+if [[ ! -d $ARCHIVESDIR ]]; then mkdir $ARCHIVESDIR ;fi
 if [[ ! -f $GENESIS ]] ; then touch $GENESIS;fi
 if [[ ! -f $ZGENESIS ]] ; then echo "$(ipfs add -q $GENESIS)" > $ZGENESIS;fi
 if [[ ! -f $ZCHAIN ]] ; then echo "$(ipfs key gen zchain)" > $ZCHAIN;fi
@@ -12,6 +14,14 @@ if [[ ! -f $ZCHAINASC ]] ; then gpg2 -bao $ZCHAINASC $ZCHAIN;fi
 if [[ ! -f $ZZCHAIN ]] ; then echo $(ipfs add -q $ZCHAINASC) > $ZZCHAIN;fi
 if [[ ! -f $GENESISASC ]] ; then gpg2 -bao $GENESISASC $GENESIS;fi
 if [[ ! -f $ZGENESISASC ]] ; then echo $(ipfs add -q $GENESISASC) > $ZGENESISASC;fi
+ipfs files ls /zarchive
+if [ $? != 0 ]; then
+	ipfs files mkdir /zarchive
+fi
+ipfs files stat /ZLATEST
+if [ $? != 0 ]; then
+	ipfs files cp /ipfs/$ZGENESIS /ZLATEST
+fi
 
 # TODO GPG/PGP setup
 # eg gpg2 --full-key-generate and/or gpg2 --set-default key
