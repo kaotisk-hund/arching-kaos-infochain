@@ -1,5 +1,9 @@
 Arching Kaos Infochain
 ======================
+> Some heads up there: the infochain has been developed on its own chain.
+> Even though Stellar Network is not used in the way described, the methods
+> described here could be revisited in the future.
+
 
 A way of spliting messages into transactions of ARCHINGKAOS asset on Stellar
 Network and restruct them from an unordered/transaction list.
