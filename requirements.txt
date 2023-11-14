@@ -1,4 +1,4 @@
-aiohttp==3.8.5
+aiohttp==3.8.6
 aiohttp-sse-client==0.2.1
 aiosignal==1.2.0
 async-timeout==4.0.1
