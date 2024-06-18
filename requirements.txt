@@ -19,5 +19,5 @@ stellar-sdk==6.1.0
 toml==0.10.2
 typeguard==2.13.0
 typing_extensions==4.0.0
-urllib3==1.26.18
+urllib3==1.26.19
 yarl==1.7.2
