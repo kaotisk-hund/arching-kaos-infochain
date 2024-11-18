@@ -1,159 +1,265 @@
 Arching Kaos Infochain
 ======================
-> Some heads up there: the infochain has been developed on its own chain.
-> Even though Stellar Network is not used in the way described, the methods
-> described here could be revisited in the future.
 
+The following is a description of what an infochain is, what it achieves and how
+is usable.
 
-A way of spliting messages into transactions of ARCHINGKAOS asset on Stellar
-Network and restruct them from an unordered/transaction list.
+1. Origins
+----------
+Infochain is a mix of information and blockchain. A blockchain is a data
+structure that is used broadly since the launch of the bitcoin network. It is
+not a technology as many people that are hooked into marketing would say, it is
+a data structure. On the other hand, information is information.
 
-See following notes on how this is achieved.
+2. What "arching" means?
+------------------------
+It can have many origins, but most likely, the original word was brought from
+the pulling of the string of a bow backwards, in order to store momentum before
+its release, so the arrow can fly into the air towards a target.
 
-Requirements
-------------
-Someone needs an amount of ARCHINGKAOS asset to make a transaction.
-Read ASSET_DISTRIBUTION for info on this. Apart from getting ARCHINGKAOS tokens,
-you can also deploy your own asset and adjust the code accordingly.
-
-Demonstration
--------------
-1. Explorer
-Visit the latest version through https://explorer.arching-kaos.net
-
-2. Mixtape parser
-Latest version of the ./static/mixtape-parser.html can be added to IPFS and
-viewed from a gateway through a browser.
-
-If you are not part of the swarm, it's better to use
-https://ipfs.arching-kaos.com gateway. You can visit the latest version of the
-swarm by going to this address:
-
-https://ipfs.arching-kaos.com/ipfs/QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-
-How it works/What is done
--------------------------
-To make a transaction containing a message we need to know one piece of
-information that packs inside it, more pieces of information.
-
-As Whitepapers mentions, into a transaction of ARCHINGKAOS asset, there is a
-part (1/5) of an IPFS CID. When every part of this IPFS CID is been sent via
-ARCHINGKAOS asset, it can get restructured to the original.
-
-How is organized
-----------------
-src/		provides the source code, you need to compile nothing, it's bash
-            and python scripts
-docs/		gathers all the documents needed (WIP)
-static/		provides html files that you can add to IPFS and load from an IPFS
-            gateway. They are rendering the chain.
-checks/		provides with python written checks of file types
-tests/		provides tests of the algorithm
-drafts/		provides some drafts written (to be deleted)
-LICENSE		the license of the repository
-README		duh, you are reading it
-ROADMAP		provides a list of tasks to be solved
-Whitepaper	an extended document, overviewing the problem, the solution and its
-            properties and impact
-clean.sh	clean up some files that are popping up when we run the code
-
-It also comes with a virtual environment tools and settings so it can be easier
-for someone to work with the repo.
-
-
-Pack a ZBLOCK
--------------
-This IPFS CID is called ZBLOCK (z block <- ze block <- the block). It should be
-a JSON object with two IPFS CIDs:
-1. IPFS CID of a BLOCK ("block")
-2. IPFS CID of a detached PGP/GPG signature of the BLOCK ("block_signature")
-
-See pack_z_block.sh script
-
-BLOCK
------
-A BLOCK should contain some key data:
-- an action
-- a data JSON object relative to the action
-- the detached signature of the data JSON object
-- the gpg key of the signer/contributor of the piece of information
-- the previous ZBLOCK
-
-ACTION
-------
-Can be literally anything! A convinient way to use it is refering to an object
-or a subject and to a verb using URL like scheme:
-e.g.: mixtape/add
-
-DATA
-----
-Can be literally anything, but is specified by the ACTION's handler
-
-How do we transfer a ZBLOCK's IPFS CID ?
-----------------------------------------
-You can directly go to edcode.py using the function encode(IPFS CID)
-
-Example:
-
-We have the following IPFS hash
-
-QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-
-We mix it with dots in this way:
-
-...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-
-We then split it like this:
-
-...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-..nYyBBWxB74N4
-c5SBnJMVAiMN..
-RcGu6x1AwQH... split it
-
-We mix its parts, 2 parts at a time:
-
-...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-...QmQZS977zMGvbrzFh2M1fHFjXC32Urng6DHY849cN7TQwh
-..nYyBBWxB74N4c5SBnJMVAiMN..
-..nYyBBWxB74N4RcGu6x1AwQH...  mix it
-
-We send each the 5 strings:
-send tx 1 2 3 4 5
-
-Who did what?
--------------
-Sender is NOT the owner of the data, is the contributor/distributor. Artists
-should be able to distribute their work.
-
-To get the info back you need to decode the list of transactions on ARCHINGKAOS
-asset
-
-To be more specific, see the edcode.decode(TRANSACTIONS) function from edcode.py
-file
-
-On reverse now
+3. Why "kaos"?
 --------------
-Download and extract the ZBLOCK
--------------------------------
-See dlx.py
+Unlikely with the classic bow which has one arrow, which implies one target or
+several in the same direction, kaos, borrowed from the Norwegian dictionary, has
+no particular target. If we take a look at the symbol of chaos, the eight
+arrowed symbol, we would see that is points to every point of the horizon, as
+well as the in between directions. In that sense, it's an omni-directional
+arrow.
 
+4. Arching Kaos
+---------------
+The meaning of these two words combined mean the just before the start of
+everything, like before big bang. Various mythologies talk about the state of
+the world before it as an undefined status of universe which didn't exist yet,
+as we know it today; it was timeless and spaceless.
 
-Verify that all the data is signed with the packed key
-------------------------------------------------------
-This could provide us with some authenticity that the actual key did post, not
-some random one which posted some public key.
+Essentially, from the same quality of nothingness this project becomes a reality
+and still expands. As the orderly world we live in, structures and relations
+form, creating the "Arching Kaos" experience. A vivid dream where the universe
+is an unstoppable continuum of frequencies and energy formation and
+transformation.
 
-TODO
+5. Brief history
+----------------
+From a materialistic scope, it derives from a webradio station, that was
+designed according to the client-server philosophy that conquers most of the
+internet today. A philosophy that has repeatedly proven its existence
+unrelatable, detached and prone to failure. The centralized approach will always
+have a single point of failure, which is not acceptable for an unstoppable radio
+station.
 
-Do extra checks (if needed)
----------------------------
-Example check at flac_check.py and ogg_check.py
+6. Decentralization
+-------------------
+As it's getting obvious day by day, the one, can not represent the "we" if it
+doesn't recognize itself as part of it. In other words, as we are humans, we
+differ from each cause we are unique. On the other hand, individualism doesn't
+do the same but creates again relations of clients and servers.
 
-Create a procedure that bonds everything in a super app
---------------------------------------------------------
-This would be really nice to have. Imagine that you could have news, mixtapes,
-announcements, blogs, videos, whatever and render them on one page with a nice
-UI.
+In order to get effective change from that model to the "we" model, peer to peer
+communities and communications have come into play on the software domain as
+well. They are forming effectively, networks of communications where everyone is
+expressing their realities, freely and in a basis of equality.
 
-TODO
+7. Chains of events
+-------------------
+Each person makes decisions and does actions based on those. We are not here to
+criticize or answer the question if fate is a thing or not. We simply observe
+and we also act accordingly, solely based on who we are and how we perceive
+other people's realities from our own.
+
+> That is the multiverse theory on effect.
+
+Storing such historical actions, is what an infochain is for, or at least what
+it is attempting to reassemble. Simply categorized types of actions, each one
+on top of each other, on a chronological series.
+
+8. Uniqueness
+-------------
+We are used to have a unique identification number which is issued by someone
+else for us, so they could identify us and match this number in a database for
+various reasons. A random number generation for preserving uniqueness in a sense
+that it would be impossible to store the whole range of numbers, could help us
+create our own system of identification. Sharing this number would only match up
+with others' people knowledge that the person giving that number out is the
+original issuer. Such concept would be possible to use with cryptographic
+algorithms, in practice with public key cryptography that the issuer has a
+private key and a public one.
+
+9. Proof of Signature
+---------------------
+Cryptographic signatures is a well known concept in cryptography and is very
+widely used nowadays. Since a public and private keys are paired mathematically,
+meaning that they both come from the same random numbers, p and q, there are
+certain operations that can be performed on some message with the one key and
+the outcome could be reversed back to the original message with the other one.
+
+Both encryption and signing of messages are using the very same operation in
+general, but the difference is which key is used each time to do the operation
+on the message we either want to encrypt or sign, decrypt or verify. Given that
+one key is public and the other is private, we would assume the classic example
+of two persons, Alice and Bob.
+
+For this example, we will assume that Alice has issued her keys and sent her
+public key to Bob. After that, Bob would send a message to Alice, encrypted with
+her public key. Alice would decrypt the received data using her private key.
+But now, Alice wants to send Bob an 'OK' message to let Bob know that she
+received her message, but she wants to ensure that she was the one that send it.
+
+Alice then, would encrypt the 'OK' message using her private key and send the
+resulting message to Bob. When Bob receives the encrypted message, would decrypt
+it using Alice's public key. That would result Bob reading the 'OK' message
+knowing that Alice sent it cause she is the only one that has access to the
+private key.
+
+10. Generic structure
+---------------------
+Since the start of the research for making this project to work, a question was
+to be answered: how to organize the information, in such way that it would be
+easy to retrieve? Let's dive into what we may want to store.
+
+10.1. Directories, files and values
+-----------------------------------
+There are a lot of types of content, be it text files, audio, photographs or
+images, videos and then there are also strings, numbers, binary values, like
+true/false and even directories with other files in them. In order to make all
+of the above appear as one type of things, what makes sense is to approach them
+as files. To accompany those files with some usable information about them, we
+could generate some metadata about each one of them.
+
+10.2. Metadata
+--------------
+Metadata are related to both the type of file we would like to publish but also
+to the type of action a person would like to store. It is expected, for example,
+to have audio files but audio files could be various types of things, namely,
+interviews, podcasts, music track/song, music compilations and so on. To make
+distinctions between those, it would make sense that the metadata is related to
+both file type and type of action one would like to store.
+
+11. The ownership problem
+-------------------------
+One can't be expected to maintain ownership when publishes a file publicly on a
+network like the internet. That is an architectural misconception of networks
+and how they do work. As in nature, trees, plants and other living organisms
+exchange nutrients by discarding stuff they don't need and accepting the ones
+they do.
+
+Also, as mentioned previously, a contributor could sign the data with their keys
+to say something like: "Hey, Charlie here, I bring this to the network". The
+question that arises after such declaration, is the ownership term. The person
+is merely a contributor of the data, it doesn't mean that it's the creator nor
+the owner of them. And if that person is indeed both of those, such status is
+going away since by publishing, they effectively give away the data.
+
+One thing though is for sure, whoever brought brings the data to the network,
+first and maybe the only one, is not bound to the data as the original creator
+of the data. That transfers to the subject of trust.
+
+12. Trust model
+---------------
+The above declaration leaves us in an untrusted environment, in means that
+nobody can know for sure:
+1. who is who,
+2. whose is what and
+3. who posted first
+
+Given that we do use cryptography for creating an identity, we can do manual
+association, therefore creating our environment based on our own trust.
+
+13. Culture continuation in art forms
+-------------------------------------
+Most, if not all, art forms, are derived from previous artworks. Art seems to
+continuously encapsulate the previously existing norm into the new form of its
+existence. Hence, whichever time window we look at, we are not witnessing only
+the artwork's era but also previous eras that are incorporated within the one
+we are looking at.
+
+In the same way, we can, not only see, but hear as well the historic view of the
+artists all over the globe, understand their influences and their art in a more
+broad way than we could do by only taking the current work as disconnected from
+others. However, in today's world, we are subjected to isolated examples which
+mostly come from a scientific take on observing phenomena in isolated and
+frictionless environments.
+
+Even when we have computer programs that are integrated with lots libraries of
+software and connected with various devices or other stuff, the paradigm of
+isolation is right there. An update to a software will possibly remove previous
+takes on a problem solving saga and leave us with a new solution that differ
+from the previously suggested one.
+
+While versioning approaches this issue and suggests ways to make software have
+an historical revisioning log, changes might not be observable in the same way
+this would happen for an artwork.
+
+Algorithmically, including a previous state reference in every new state, would
+reliably archive an historic event chain. A blockchain is doing exactly that.
+
+14. Resolution
+--------------
+Typically, after experimenting broadly with the blockchain data structure, while
+trying to distinct use cases between them, ship signatures for various levels of
+information and land to one reference, there are 4 main points of interest:
+a) data,
+b) metadata,
+c) metadata description and
+d) block.
+
+While data can be a single file with information we want to store or publish on
+the discussed system and metadata would be relevant information about it, the
+metadata description is a layer upwards of abstraction which we could be using
+for some information to describe which kind of metadata format we could be
+expecting. Further, block would be the place where all the above would be stored
+for later usage, providing a single point of access.
+
+The above mentioned list would be inverted when we would be accessing it via the
+developed system (see arching-kaos-tools for implementation), like:
+a) block, (ZBLOCK)
+b) metadata description, (BLOCK)
+c) metadata (DATA) and
+d) data (IPFS/FILE/HASH),
+where the labels in the parentheses are the names mentioned in the developed
+implementation.
+
+In the same repository, there is ./previous_researches/00-message-splitting file
+which describes a bit more the model of this structure. To avoid confusion, we
+will be doing this here as well.
+
+14.1. ZBLOCK
+------------
+A ZBLOCK is consisted of two things:
+a) a hash for a BLOCK and
+b) a hash for a signature of that BLOCK.
+
+Note that the ZBLOCK on its own is an unsigned reference. We do use JSON format
+to represent the ZBLOCK for ease of use.
+
+14.2. BLOCK
+-----------
+The BLOCK has a lot more of information, including the GPG key which it was
+signed with (the signature we found inside ZBLOCK), time stamp of creation etc.
+In a list, it looks like this:
+a) time stamp in UTC, UNIX seconds,
+b) an ACTION,
+c) hash for DATA (metadata),
+d) hash for DATA signature,
+e) hash for a previous ZBLOCK and
+f) hash for a GPG key.
+
+ACTION determines how the data will be processed. DATA should be compliant to
+what ACTION field suggests.
+
+We use JSON format to represent each BLOCK.
+
+14.3. DATA
+----------
+DATA field is mostly a generic layout of descriptive information about a file.
+It should contain at least a reference to a file which would be processed by
+the relevant module from the system, declared on the "ACTION" field inside the
+BLOCK. Also, a GPG signature is needed for the file as well. Other fields are
+optional.
+
+15. The outcome
+---------------
+In short, we can use chains of information, signed in a cryptographic sense, to
+provide historic information of publications a holder of a certain key would be
+doing. Retrieval is easy and verifiable, while trust can be driven in the same
+way that happens in societies.
